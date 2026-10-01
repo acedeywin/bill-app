@@ -37,16 +37,30 @@ func promptOptions(b bill) {
 	case "a":
 		name, _ := getInput("Item name: ", reader)
 		price, _ := getInput("Item price: ", reader)
-		p, _ := strconv.ParseFloat(price, 64)
+		p, err := strconv.ParseFloat(price, 64)
+
+		if err != nil {
+			fmt.Println("Invalid price. Please try again.")
+			promptOptions(b)
+		}
+
 		b.addItem(name, p)
 		fmt.Println("Item added - ", name, p)
 		promptOptions(b)
+
 	case "t":
 		tip, _ := getInput("Enter tip amount ($): ", reader)
-		t, _ := strconv.ParseFloat(tip, 64)
+		t, err := strconv.ParseFloat(tip, 64)
+
+		if err != nil {
+			fmt.Println("Invalid tip amount. Please try again.")
+			promptOptions(b)
+		}
+		
 		b.updateTip(t)
 		fmt.Println("Tip added - $", t)
 		promptOptions(b)
+
 	case "s":
 		fmt.Println("Saving bill...")
 		billFileName := b.name + ".txt"
